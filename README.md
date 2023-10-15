@@ -11,9 +11,9 @@ The goal of this project is to draw inspiration from the NYT's "Spelling Bee" ga
 - "OYU!" -> YOU!
 
 ## Project TODOs
-1. Setup database/backend. I'm thinking Firebase for convenience
-    - Generate pangrams (set up serverless function to do this?) - in the short term, write Python script to do so and save to database
-2. Use a FutureProvider to load letters and pangrams from the database
+1. Setup database/backend. I'm thinking textfile for convenience
+    - in the short term, write Python script to do generate pangrams and save to file
+2. Use a FutureProvider to load letters and pangrams from the file
 3. Implement word check logic (AMBIENCE - yes! MACE - not a valid pangram) - add as function of answerProvider
 4. Implement success animation on successful pangram
 5. Implement screen reload when all pangrams are exhausted

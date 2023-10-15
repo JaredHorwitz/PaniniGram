@@ -8,7 +8,7 @@ class Hive extends ConsumerWidget {
     super.key,
     required this.letters,
   });
-  final List<String> letters;
+  final List<dynamic> letters;
 
   String mapCoordinatesToListPosition(int q, int r) {
     switch ((q, r)) {
