@@ -39,12 +39,16 @@ class _DisplayTextState extends ConsumerState<DisplayText>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          widget.answer,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize:
-                  (answer.length) < 12 ? 32 : ((answer.length < 15) ? 25 : 20)),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+          child: Text(
+            widget.answer,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: (answer.length) < 12
+                    ? 32
+                    : ((answer.length < 15) ? 25 : 20)),
+          ),
         ),
         FadeTransition(
           opacity: _animationController,

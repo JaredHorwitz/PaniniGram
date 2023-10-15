@@ -7,7 +7,7 @@ class AnswerNotifier extends Notifier<String> {
   }
 
   void addLetter(String letter) {
-    if (state.length < 19) {
+    if (state.length < 18) {
       state = state + letter;
     }
   }
