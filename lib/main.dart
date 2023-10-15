@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paninigram/providers/answer.dart';
 
 import 'widgets/action_button.dart';
 import 'widgets/hive.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  ConsumerState<MainApp> createState() => _MainAppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends ConsumerState<MainApp> {
   final List<String> inLetters = ['C', 'A', 'M', 'B', 'I', 'N', 'E'];
 
   @override
@@ -25,7 +27,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    String answer = 'CINEMA';
+    String answer = ref.watch(answerProvider);
 
     return MaterialApp(
       title: "PaniniGram",
@@ -50,7 +52,10 @@ class _MainAppState extends State<MainApp> {
               children: [
                 ActionButton(
                   text: "Delete",
-                  onPressed: () => debugPrint('Delete'),
+                  onPressed: () {
+                    debugPrint('Delete');
+                    ref.read(answerProvider.notifier).deleteLetter();
+                  },
                 ),
                 ActionButton(
                   text: "Enter",

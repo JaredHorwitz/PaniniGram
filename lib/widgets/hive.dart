@@ -1,7 +1,9 @@
 import 'package:hexagon/hexagon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paninigram/providers/answer.dart';
 
-class Hive extends StatelessWidget {
+class Hive extends ConsumerWidget {
   const Hive({
     super.key,
     required this.letters,
@@ -29,7 +31,7 @@ class Hive extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InteractiveViewer(
       minScale: 1.0,
       maxScale: 1.0,
@@ -49,7 +51,7 @@ class Hive extends StatelessWidget {
                   ? Colors.yellow
                   : const Color(0xd9d9d9d9),
               child: InkWell(
-                onTap: () => debugPrint(
+                onTap: () => ref.read(answerProvider.notifier).addLetter(
                     mapCoordinatesToListPosition(coordinates.q, coordinates.r)),
                 child: Center(
                   child: Text(
