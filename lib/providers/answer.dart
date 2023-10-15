@@ -7,13 +7,15 @@ class AnswerNotifier extends Notifier<String> {
   }
 
   void addLetter(String letter) {
-    if (state.length < 16) {
+    if (state.length < 19) {
       state = state + letter;
     }
   }
 
   void deleteLetter() {
-    state = state.substring(0, state.length - 1);
+    if (state.isNotEmpty) {
+      state = state.substring(0, state.length - 1);
+    }
   }
 }
 

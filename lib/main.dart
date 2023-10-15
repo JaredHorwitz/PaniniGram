@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paninigram/providers/answer.dart';
 
 import 'widgets/action_button.dart';
+import 'widgets/display_text.dart';
 import 'widgets/hive.dart';
 
 void main() {
@@ -37,10 +38,7 @@ class _MainAppState extends ConsumerState<MainApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              answer,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
-            ),
+            DisplayText(answer: answer),
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Hive(
