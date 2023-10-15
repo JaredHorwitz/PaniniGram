@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paninigram/providers/answer.dart';
 import 'package:paninigram/providers/pangram.dart';
-import 'package:paninigram/screens/success.dart';
 
 import 'widgets/action_button.dart';
+import 'widgets/bottom_dialog.dart';
 import 'widgets/display_text.dart';
 import 'widgets/hive.dart';
 
@@ -75,9 +75,35 @@ class Home extends StatelessWidget {
                   if (success) {
                     debugPrint('transition now!');
                     if (context.mounted) {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const SuccessScreen()));
+                      showDialog(
+                          barrierColor: const Color(0x01000000),
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(const Duration(seconds: 3), () {
+                              Navigator.of(context).pop(true);
+                            });
+                            return const BottomDialog(
+                              success: true,
+                            );
+                          });
+                      var _ = ref.refresh(pangramsProvider);
+                      var __ = ref.refresh(answerProvider);
                     }
+                  } else {
+                    if (context.mounted) {
+                      showDialog(
+                          barrierColor: const Color(0x01000000),
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.of(context).pop(true);
+                            });
+                            return const BottomDialog(
+                              success: false,
+                            );
+                          });
+                    }
+                    var _ = ref.refresh(answerProvider);
                   }
                 },
               ),
