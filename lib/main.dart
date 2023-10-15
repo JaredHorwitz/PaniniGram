@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paninigram/providers/answer.dart';
 import 'package:paninigram/providers/pangram.dart';
+import 'package:paninigram/screens/success.dart';
 
 import 'widgets/action_button.dart';
 import 'widgets/display_text.dart';
@@ -19,54 +20,71 @@ class MainApp extends ConsumerStatefulWidget {
 }
 
 class _MainAppState extends ConsumerState<MainApp> {
-  final List<String> inLetters = ['C', 'A', 'M', 'B', 'I', 'N', 'E'];
-
-  List<dynamic> getLetters(String pangram) {
-    return pangram.split('').toSet().toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     String answer = ref.watch(answerProvider);
-    AsyncValue<List<String>> pangrams = ref.watch(pangramProvider);
 
-    return pangrams.when(
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stackTrace) => Text(stackTrace.toString()),
-        data: (data) => MaterialApp(
-              title: "PaniniGram",
-              color: Colors.white,
-              home: Scaffold(
-                backgroundColor: Colors.white,
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DisplayText(answer: answer),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Hive(
-                        letters: getLetters(data[0]),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ActionButton(
-                          text: "Delete",
-                          onPressed: () {
-                            debugPrint('Delete');
-                            ref.read(answerProvider.notifier).deleteLetter();
-                          },
-                        ),
-                        ActionButton(
-                          text: "Enter",
-                          onPressed: () => debugPrint('Enter'),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+    return MaterialApp(
+      title: "PaniniGram",
+      color: Colors.white,
+      home: Home(
+        answer: answer,
+        ref: ref,
+      ),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({
+    super.key,
+    required this.answer,
+    required this.ref,
+  });
+
+  final String answer;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          DisplayText(answer: answer),
+          const Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Hive(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ActionButton(
+                text: "Delete",
+                onPressed: () {
+                  debugPrint('Delete');
+                  ref.read(answerProvider.notifier).deleteLetter();
+                },
               ),
-            ));
+              ActionButton(
+                text: "Enter",
+                onPressed: () async {
+                  bool success = await ref.watch(solutionProvider.future);
+                  debugPrint(success.toString());
+                  if (success) {
+                    debugPrint('transition now!');
+                    if (context.mounted) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SuccessScreen()));
+                    }
+                  }
+                },
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
