@@ -67,6 +67,20 @@ class Home extends StatelessWidget {
                   ref.read(answerProvider.notifier).deleteLetter();
                 },
               ),
+              Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.white,
+                  shape:
+                      CircleBorder(side: BorderSide(color: Color(0xd3d3d3d3))),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.loop),
+                  color: Colors.black,
+                  onPressed: () {
+                    ref.read(shuffleProvider.notifier).shuffle();
+                  },
+                ),
+              ),
               ActionButton(
                 text: "Enter",
                 onPressed: () async {

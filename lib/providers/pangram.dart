@@ -28,3 +28,21 @@ final solutionProvider = FutureProvider<bool>((ref) async {
   String answer = ref.watch(answerProvider);
   return pangrams.contains(answer);
 });
+
+class ShuffleNotifier extends Notifier<bool> {
+  @override
+  build() {
+    return false;
+  }
+
+  void shuffle() {
+    state = true;
+  }
+
+  void done() {
+    state = false;
+  }
+}
+
+final shuffleProvider =
+    NotifierProvider<ShuffleNotifier, bool>(() => ShuffleNotifier());
