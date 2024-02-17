@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ColorNotifier extends StateNotifier<List<int>> {
-  ColorNotifier() : super([255, 245, 145, 40]); //argb
+  ColorNotifier() : super([200, 170, 230, 200]); //argb
   void updateColors() {
     state = [
       150 + Random().nextInt(255 - 150),
