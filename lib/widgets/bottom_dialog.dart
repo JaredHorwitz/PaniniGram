@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BottomDialog extends StatelessWidget {
-  const BottomDialog({super.key, required this.success});
+class TopDialog extends StatelessWidget {
+  const TopDialog({super.key, required this.success});
   final bool success;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         AlertDialog(
           backgroundColor: (success) ? Colors.green : Colors.black,

@@ -124,7 +124,7 @@ class _HomeState extends ConsumerState<Home> {
                               Future.delayed(const Duration(seconds: 3), () {
                                 Navigator.of(context).pop(true);
                               });
-                              return const BottomDialog(
+                              return const TopDialog(
                                 success: true,
                               );
                             });
@@ -140,7 +140,7 @@ class _HomeState extends ConsumerState<Home> {
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.of(context).pop(true);
                               });
-                              return const BottomDialog(
+                              return const TopDialog(
                                 success: false,
                               );
                             });

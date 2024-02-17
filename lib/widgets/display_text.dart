@@ -27,11 +27,11 @@ class _DisplayTextState extends ConsumerState<DisplayText>
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _animationController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

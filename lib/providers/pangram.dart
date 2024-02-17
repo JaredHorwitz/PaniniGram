@@ -14,6 +14,7 @@ final pangramsProvider = FutureProvider<List<String>>((ref) async {
   String line = lines[lineChoice].toUpperCase();
   List<String> pangrams = line.split(',');
   debugPrint('Pangram: ${pangrams[0]}');
+  debugPrint('Pangrams: ${pangrams.toString()}');
 
   return pangrams;
 });
