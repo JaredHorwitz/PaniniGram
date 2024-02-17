@@ -35,7 +35,7 @@ class _MainAppState extends ConsumerState<MainApp> {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({
     super.key,
     required this.answer,
@@ -46,16 +46,27 @@ class Home extends StatelessWidget {
   final WidgetRef ref;
 
   @override
+  ConsumerState<Home> createState() => _HomeState();
+}
+
+class _HomeState extends ConsumerState<Home> {
+  List<int> positions = const [0, 1, 2, 3, 4, 5, 6];
+
+  @override
   Widget build(BuildContext context) {
+    final AsyncValue<List<String>> letters = ref.watch(pangramLettersProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DisplayText(answer: answer),
-          const Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Hive(),
+          DisplayText(answer: widget.answer),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Hive(
+              letters: letters,
+              positions: positions,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +75,7 @@ class Home extends StatelessWidget {
                 text: "Delete",
                 onPressed: () {
                   debugPrint('Delete');
-                  ref.read(answerProvider.notifier).deleteLetter();
+                  widget.ref.read(answerProvider.notifier).deleteLetter();
                 },
               ),
               Ink(
@@ -77,14 +88,19 @@ class Home extends StatelessWidget {
                   icon: const Icon(Icons.loop),
                   color: Colors.black,
                   onPressed: () {
-                    ref.read(shuffleProvider.notifier).shuffle();
+                    setState(() {
+                      List<int> newPositions = List.from(positions);
+                      newPositions.shuffle();
+                      positions = newPositions;
+                    });
                   },
                 ),
               ),
               ActionButton(
                 text: "Enter",
                 onPressed: () async {
-                  bool success = await ref.watch(solutionProvider.future);
+                  bool success =
+                      await widget.ref.watch(solutionProvider.future);
                   debugPrint(success.toString());
                   if (success) {
                     debugPrint('transition now!');
@@ -100,8 +116,8 @@ class Home extends StatelessWidget {
                               success: true,
                             );
                           });
-                      var _ = ref.refresh(pangramsProvider);
-                      var __ = ref.refresh(answerProvider);
+                      var _ = widget.ref.refresh(pangramsProvider);
+                      var __ = widget.ref.refresh(answerProvider);
                     }
                   } else {
                     if (context.mounted) {
@@ -117,7 +133,7 @@ class Home extends StatelessWidget {
                             );
                           });
                     }
-                    var _ = ref.refresh(answerProvider);
+                    var _ = widget.ref.refresh(answerProvider);
                   }
                 },
               ),
