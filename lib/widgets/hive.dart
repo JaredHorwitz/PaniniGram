@@ -2,6 +2,7 @@ import 'package:hexagon/hexagon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paninigram/providers/answer.dart';
+import 'package:paninigram/providers/colors.dart';
 
 class Hive extends ConsumerWidget {
   const Hive({
@@ -39,6 +40,7 @@ class Hive extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<int> colorsARGB = ref.watch(colorProvider);
     return letters.when(
         loading: () => const CircularProgressIndicator(),
         error: (error, stackTrace) => Text(stackTrace.toString()),
@@ -52,15 +54,15 @@ class Hive extends ConsumerWidget {
               depth: 1,
               buildTile: (coordinates) => HexagonWidgetBuilder(
                 color: (coordinates.q == 0 && coordinates.r == 0)
-                    ? Colors.yellow
-                    : const Color(0xd9d9d9d9),
+                    ? Color.fromARGB(colorsARGB[0], colorsARGB[3],
+                        colorsARGB[2], colorsARGB[1])
+                    : Color.fromARGB(colorsARGB[0], colorsARGB[1],
+                        colorsARGB[2], colorsARGB[3]),
                 padding: 4.0,
                 cornerRadius: 8.0,
                 child: SizedBox.expand(
                   child: Material(
-                    color: (coordinates.q == 0 && coordinates.r == 0)
-                        ? Colors.yellow
-                        : const Color(0xd9d9d9d9),
+                    color: Colors.transparent,
                     child: InkWell(
                       onTap: () => ref.read(answerProvider.notifier).addLetter(
                           mapCoordinatesToListPosition(
