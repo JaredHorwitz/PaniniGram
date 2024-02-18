@@ -4,7 +4,9 @@ import 'package:paninigram/providers/answer.dart';
 import 'package:paninigram/providers/colors.dart';
 import 'package:paninigram/providers/pangram.dart';
 import 'package:paninigram/providers/words.dart';
-import 'package:paninigram/widgets/words_page.dart';
+import 'package:paninigram/screens/hint_screen.dart';
+import 'package:paninigram/screens/profile_screen.dart';
+import 'package:paninigram/screens/word_screen.dart';
 
 import 'widgets/action_button.dart';
 import 'widgets/bottom_dialog.dart';
@@ -31,7 +33,7 @@ class _MainAppState extends ConsumerState<MainApp> {
       title: "PaniniGram",
       color: Colors.white,
       home: DefaultTabController(
-        length: 2,
+        length: 4,
         child: Home(
           answer: answer,
           ref: ref,
@@ -58,6 +60,7 @@ class Home extends ConsumerStatefulWidget {
 class _HomeState extends ConsumerState<Home> {
   List<int> positions = const [0, 1, 2, 3, 4, 5, 6];
   int currentPageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     List<int> colorsARGB = ref.watch(colorProvider);
@@ -120,9 +123,9 @@ class _HomeState extends ConsumerState<Home> {
                         showDialog(
                             barrierColor: const Color(0x01000000),
                             context: context,
-                            builder: (context) {
+                            builder: (dialogContext) {
                               Future.delayed(const Duration(seconds: 3), () {
-                                Navigator.of(context).pop(true);
+                                Navigator.of(dialogContext).pop(true);
                               });
                               return const TopDialog(
                                 success: true,
@@ -136,9 +139,9 @@ class _HomeState extends ConsumerState<Home> {
                         showDialog(
                             barrierColor: const Color(0x01000000),
                             context: context,
-                            builder: (context) {
+                            builder: (dialogContext) {
                               Future.delayed(const Duration(seconds: 1), () {
-                                Navigator.of(context).pop(true);
+                                Navigator.of(dialogContext).pop(true);
                               });
                               return const TopDialog(
                                 success: false,
@@ -154,8 +157,9 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
       ),
-      const WordsPage(),
-      const CircularProgressIndicator(),
+      const WordScreen(),
+      const ProfileScreen(),
+      const HintScreen(),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -168,16 +172,24 @@ class _HomeState extends ConsumerState<Home> {
         currentIndex: currentPageIndex,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            backgroundColor: Colors.black,
+            icon: Icon(Icons.hive),
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Colors.black,
             icon: Icon(Icons.menu_book),
             label: 'Words',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Colors.black,
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.black,
+            icon: Icon(Icons.lightbulb),
+            label: 'Hint',
           ),
         ],
       ),

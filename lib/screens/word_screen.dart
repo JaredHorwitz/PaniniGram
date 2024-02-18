@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paninigram/providers/words.dart';
+import 'package:paninigram/widgets/action_button.dart';
 
-class WordsPage extends ConsumerWidget {
-  const WordsPage({super.key});
+class WordScreen extends ConsumerWidget {
+  const WordScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -11,8 +12,8 @@ class WordsPage extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Flexible(
-          flex: 2,
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 54, 0, 0),
           child: Center(
             child: Text(
               'My Words',
@@ -21,11 +22,12 @@ class WordsPage extends ConsumerWidget {
           ),
         ),
         Flexible(
-          flex: 8,
+          flex: 10,
           child: ListView.builder(
             itemCount: words.length,
-            itemBuilder: (context, index) => Card(
-              child: Text(words[index]),
+            itemBuilder: (context, index) => ActionButton(
+              text: words[index],
+              onPressed: () {},
             ),
           ),
         ),
