@@ -13,20 +13,12 @@ class HintScreen extends ConsumerWidget {
     return pangrams.when(data: (data) {
       List<Widget> hintButtons = [];
       for (var letter in data[0].split('')) {
-        hintButtons.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: HintButton(letter: letter),
-        ));
+        hintButtons.add(HintButton(letter: letter));
       }
-      return Center(
-          child: SizedBox(
-        width: 100,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          children: hintButtons,
-        ),
-      ));
+      return GridView.count(
+        crossAxisCount: 3,
+        children: hintButtons,
+      );
     }, error: (error, stack) {
       return Center(child: Text('$error: $stack'));
     }, loading: () {

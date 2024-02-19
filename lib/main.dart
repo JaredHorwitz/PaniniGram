@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paninigram/models/color.dart';
 import 'package:paninigram/providers/answer.dart';
 import 'package:paninigram/providers/colors.dart';
 import 'package:paninigram/providers/pangram.dart';
@@ -63,7 +64,7 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> colorsARGB = ref.watch(colorProvider);
+    PColor colors = ref.watch(colorProvider);
     final AsyncValue<List<String>> letters = ref.watch(pangramLettersProvider);
     List<Widget> widgetOptions = [
       Padding(
@@ -91,8 +92,7 @@ class _HomeState extends ConsumerState<Home> {
                 ),
                 Ink(
                   decoration: ShapeDecoration(
-                    color: Color.fromARGB(colorsARGB[0], colorsARGB[1],
-                        colorsARGB[2], colorsARGB[3]),
+                    color: colors.outerColor,
                     shape: const CircleBorder(
                         side: BorderSide(color: Color(0xd3d3d3d3))),
                   ),
@@ -121,32 +121,48 @@ class _HomeState extends ConsumerState<Home> {
                           .addWord(ref.read(answerProvider));
                       if (context.mounted) {
                         showDialog(
-                            barrierColor: const Color(0x01000000),
-                            context: context,
-                            builder: (dialogContext) {
-                              Future.delayed(const Duration(seconds: 3), () {
-                                Navigator.of(dialogContext).pop(true);
-                              });
-                              return const TopDialog(
-                                success: true,
-                              );
-                            });
+                          barrierColor: const Color(0x01000000),
+                          context: context,
+                          builder: (context) {
+                            return FutureBuilder(
+                              future: Future.delayed(const Duration(seconds: 1))
+                                  .then((value) => true),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  Navigator.of(context).pop();
+                                }
+
+                                return const TopDialog(
+                                  success: true,
+                                );
+                              },
+                            );
+                          },
+                        );
                         ref.invalidate(pangramsProvider);
                         ref.invalidate(answerProvider);
                       }
                     } else {
                       if (context.mounted) {
                         showDialog(
-                            barrierColor: const Color(0x01000000),
-                            context: context,
-                            builder: (dialogContext) {
-                              Future.delayed(const Duration(seconds: 1), () {
-                                Navigator.of(dialogContext).pop(true);
-                              });
-                              return const TopDialog(
-                                success: false,
-                              );
-                            });
+                          barrierColor: const Color(0x01000000),
+                          context: context,
+                          builder: (context) {
+                            return FutureBuilder(
+                              future: Future.delayed(const Duration(seconds: 1))
+                                  .then((value) => true),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  Navigator.of(context).pop();
+                                }
+
+                                return const TopDialog(
+                                  success: false,
+                                );
+                              },
+                            );
+                          },
+                        );
                       }
                       var _ = ref.refresh(answerProvider);
                     }
